@@ -9,33 +9,22 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     #region Variables 
     [SerializeField]
     GameObject imagePrefab;
-
     [SerializeField]
     Color color1;
-
     [SerializeField]
     Color color2;
-
     [SerializeField]
     int imageCount = 10;
-
     [SerializeField]
     float circleRad = 1f;
-
-
-    [SerializeField]
-    float currentAngle;
-
-
     [SerializeField]
     Vector3 circleAxesMultiplication;
-
-
     [SerializeField]
     List<GameObject> imageBlocks = new List<GameObject>(10);
     #endregion
 
-
+    //Public float for angle change
+    public float currentAngle;
 
     void Update()
     {
