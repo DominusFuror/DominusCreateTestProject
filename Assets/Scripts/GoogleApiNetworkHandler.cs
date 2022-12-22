@@ -5,12 +5,12 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
-
+using UnityEngine.Events;
 public class GoogleApiNetworkHandler : MonoBehaviour
 {
 
 
-
+    public UnityEvent completeWebReq;
     class NetworkSettings
     {
         public string placeURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
@@ -92,7 +92,7 @@ public class GoogleApiNetworkHandler : MonoBehaviour
                 Texture2D texture = ((DownloadHandlerTexture)req.downloadHandler).texture;
                 var bytes = texture.EncodeToPNG();
                 File.WriteAllBytes("photo.png", bytes);
-
+                
             }
             catch (System.Exception)
             {
@@ -101,6 +101,8 @@ public class GoogleApiNetworkHandler : MonoBehaviour
             }
 
         }
+
+        completeWebReq.Invoke();
         yield break;
 
 

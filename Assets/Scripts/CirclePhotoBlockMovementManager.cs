@@ -26,7 +26,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     #endregion
 
     //Public float for angle change and image count
-    public float currentAngle;
+    public float currentAngle=0;
     public int imageCount = 10;
     public float step;
     void Update()
@@ -37,9 +37,10 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     }
 
 
-    private void Start()
+    private void OnEnable()
     {
         step = Mathf.PI * 2 / imageCount;
+        currentAngle = 0;
         GeneretImageBlocks();
       
     }
@@ -68,7 +69,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
                 if (i == 0)
                 {
 
-                    imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = Color.red;
+                   imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = ImageLoaderManager.imageUploader.UploadImage();
                 }
             }
             else
