@@ -21,6 +21,8 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     Vector3 circleAxesMultiplication;
     [SerializeField]
     List<GameObject> imageBlocks = new List<GameObject>(10);
+    [SerializeField]
+    float imageBlockAngle = 0;
     #endregion
 
     //Public float for angle change and image count
@@ -30,6 +32,8 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     void Update()
     {
         BlocksMoveUpdate();
+        
+        
     }
 
 
@@ -51,9 +55,9 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
         {
 
             Vector3 newPrefabPosition = UpdateImageBlocksPositions(i);
-
+            Quaternion newPrefabRot = UpdateImageBlocksRotation(newPrefabPosition);
             imageBlocks.Add(
-                Instantiate(imagePrefab, newPrefabPosition, Quaternion.Euler(0, -90, 0)
+                Instantiate(imagePrefab, newPrefabPosition, newPrefabRot
                 ));
 
             imageBlocks[i].transform.parent = this.transform;
@@ -61,6 +65,11 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
             if (i % 2 == 0)
             {
                 imageBlocks[i].GetComponent<SpriteRenderer>().color = color1;
+                if (i == 0)
+                {
+
+                    imageBlocks[i].GetComponent<SpriteRenderer>().color = Color.red;
+                }
             }
             else
             {
@@ -80,7 +89,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
        
         this.transform.position = Vector3.right * -circleRad * circleAxesMultiplication.x;
         // The step is calculated depending on the number of blocks for the same distance between them
-      
+
 
 
         //Calculation of each coordinate for circular motion
@@ -93,14 +102,38 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
 
         return position;
     }
-    
+    private Quaternion UpdateImageBlocksRotation(Vector3 itemPosition)
+    {
+
+
+       
+        
+        float y = 90 - Mathf.Lerp(0, 90, Mathf.Abs( itemPosition.x- circleRad * circleAxesMultiplication.x) / circleRad*circleAxesMultiplication.x);
+
+
+        if (itemPosition.z > 0)
+        {
+            y *= -1;
+
+        }
+
+        if(itemPosition.x <= (-circleRad * circleAxesMultiplication.x)*0.99f)
+        {
+
+            y += 3;
+        }
+        
+        Quaternion rotate = Quaternion.Euler(0, y, 0);
+
+        return rotate;
+    }
     private void BlocksMoveUpdate()
     {
         for (int i = 0; i < imageCount; i++)
         {
 
             imageBlocks[i].transform.position = UpdateImageBlocksPositions(i);
-
+            imageBlocks[i].transform.rotation = UpdateImageBlocksRotation(imageBlocks[i].transform.localPosition);
         }
     }
 
