@@ -37,7 +37,7 @@ public class InputManager : MonoBehaviour
         if (Mathf.Abs(moveVelocity) < 0.1f && !Input.GetKey(KeyCode.Mouse0))
         {
 
-            if (moveVelocity != 0)
+            if (moveVelocity != 0 || Input.GetKeyUp(KeyCode.Mouse0))
             {
                 if (moveFinisher == null)
                 {
