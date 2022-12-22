@@ -29,6 +29,9 @@ public class InputManager : MonoBehaviour
     bool recordVelocity = false;
 
 
+   
+
+
     private void Update()
     {
         MouseInputCheck();
@@ -76,9 +79,10 @@ public class InputManager : MonoBehaviour
 
             if (recordVelocity)
             {
+               
                 StopAllCoroutines();
                 moveByButton = false;
-                
+         
                 if (moveFinisher != null)
                 {
 
@@ -92,7 +96,7 @@ public class InputManager : MonoBehaviour
 
                 if (Mathf.Abs(xChange)>1)
                 {
-
+                    InfoBlockAnimationManager.infoBlockAnimationManager.HideBlock();
                     moveVelocity += (Input.mousePosition.x - lastMousePositionX) * Time.deltaTime ;
 
 
@@ -155,9 +159,9 @@ public class InputManager : MonoBehaviour
     {
 
         clicks++;
-   
 
 
+        InfoBlockAnimationManager.infoBlockAnimationManager.HideBlock();
         // Stop slider Movement Finisher when start movement by buttons
         if (moveFinisher != null)
         {
@@ -244,6 +248,7 @@ public class InputManager : MonoBehaviour
         moveByButton = false;
         moveIteration = 0;
         clicks = 0;
+     
         yield break;
     }
     

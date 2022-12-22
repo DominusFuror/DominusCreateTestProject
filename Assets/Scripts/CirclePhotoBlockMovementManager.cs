@@ -64,16 +64,16 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
             imageBlocks[i].name = "ImageBlock" + i;
             if (i % 2 == 0)
             {
-                imageBlocks[i].GetComponent<SpriteRenderer>().color = color1;
+                imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = color1;
                 if (i == 0)
                 {
 
-                    imageBlocks[i].GetComponent<SpriteRenderer>().color = Color.red;
+                    imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = Color.red;
                 }
             }
             else
             {
-                imageBlocks[i].GetComponent<SpriteRenderer>().color = color2;
+                imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = color2;
             }
         }
     }
@@ -111,9 +111,10 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
         float y = 90 - Mathf.Lerp(0, 90, Mathf.Abs( itemPosition.x- circleRad * circleAxesMultiplication.x) / circleRad*circleAxesMultiplication.x);
 
 
-        if (itemPosition.z > 0)
+        if (itemPosition.z > 0 && !(itemPosition.x <= (-circleRad * circleAxesMultiplication.x) * 0.99f))
         {
-            y *= -1;
+           y *=-1;
+            y += 180;
 
         }
 
