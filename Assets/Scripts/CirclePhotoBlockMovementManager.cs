@@ -13,8 +13,8 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     Color color1;
     [SerializeField]
     Color color2;
-    [SerializeField]
-    int imageCount = 10;
+   
+   
     [SerializeField]
     float circleRad = 1f;
     [SerializeField]
@@ -23,9 +23,10 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     List<GameObject> imageBlocks = new List<GameObject>(10);
     #endregion
 
-    //Public float for angle change
+    //Public float for angle change and image count
     public float currentAngle;
-
+    public int imageCount = 10;
+    public float step;
     void Update()
     {
         BlocksMoveUpdate();
@@ -34,7 +35,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
 
     private void Start()
     {
-
+        step = Mathf.PI * 2 / imageCount;
         GeneretImageBlocks();
       
     }
@@ -79,7 +80,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
        
         this.transform.position = Vector3.right * -circleRad * circleAxesMultiplication.x;
         // The step is calculated depending on the number of blocks for the same distance between them
-        float step = Mathf.PI * 2 / imageCount;
+      
 
 
         //Calculation of each coordinate for circular motion

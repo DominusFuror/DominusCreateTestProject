@@ -19,21 +19,55 @@ public class InputManager : MonoBehaviour
     float sensetivy = 1;
 
     int frameSmoothCounter = 0;
+
+
+    Coroutine moveFinisher;
     private void Update()
     {
         MouseInputCheck();
-    
-        CirclePhotoBlockMovementManager.currentAngle +=moveVelocity / 1000 * sensetivy;
+        CircleMovement();
+       
     }
 
+
+    void CircleMovement()
+    {
+
+
+        if (Mathf.Abs(moveVelocity) < 0.1f && !Input.GetKey(KeyCode.Mouse0))
+        {
+
+            if (moveVelocity != 0)
+            {
+                if (moveFinisher == null)
+                {
+                    moveFinisher = StartCoroutine(MoveFinisher());
+                }
+            }
+            moveVelocity = 0;
+
+        }
+        else
+        {
+
+            CirclePhotoBlockMovementManager.currentAngle += moveVelocity / 1000 * sensetivy;
+        }
+    }
     void MouseInputCheck()
     {
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
+
             if (recordVelocity)
             {
-             
+                if (moveFinisher != null)
+                {
+
+                    StopCoroutine(moveFinisher);
+                    moveFinisher = null;
+                }
+
 
                 float xChange = Input.mousePosition.x - lastMousePositionX;
                 if (Mathf.Abs(xChange)>1)
@@ -72,14 +106,35 @@ public class InputManager : MonoBehaviour
         else
         {
             recordVelocity = false;
+           
+
         }
 
         moveVelocity *= 1 - 1*Time.deltaTime;
 
-        if ( Mathf.Abs( moveVelocity) < 0.001f )
-        {
-            moveVelocity = 0;
-        }
+      
     }
 
+
+    IEnumerator MoveFinisher()
+    {
+        
+        float neasrestPosition=  CirclePhotoBlockMovementManager.currentAngle / CirclePhotoBlockMovementManager.step;
+
+        neasrestPosition = Mathf.Round(neasrestPosition);
+
+        neasrestPosition = neasrestPosition * CirclePhotoBlockMovementManager.step;
+        print(neasrestPosition);
+
+        while (Mathf.Abs(neasrestPosition-CirclePhotoBlockMovementManager.currentAngle)>0.001f)
+        {
+
+            CirclePhotoBlockMovementManager.currentAngle = Mathf.Lerp(CirclePhotoBlockMovementManager.currentAngle,neasrestPosition,Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+
+        }
+
+
+        yield break;
+    }
 }
