@@ -11,6 +11,7 @@ public class GoogleApiNetworkHandler : MonoBehaviour
 
 
     public UnityEvent completeWebReq;
+    public UnityEvent internetError;
     class NetworkSettings
     {
         public string placeURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
@@ -49,7 +50,7 @@ public class GoogleApiNetworkHandler : MonoBehaviour
 
         if (req.result != UnityWebRequest.Result.Success)
         {
-            Debug.Log(req.error);
+            internetError.Invoke();
         }
         else
         {
@@ -57,15 +58,17 @@ public class GoogleApiNetworkHandler : MonoBehaviour
             {
                
                 googleApiPlaceJSON = JsonConvert.DeserializeObject<GoogleApiPlaceJSON>(req.downloadHandler.text);
+                StartCoroutine(GetGooglePhoto(700));
             }
             catch (System.Exception)
             {
-                        
+                internetError.Invoke();
                 throw new System.Exception("Can't FromJson google Place JSON");
+               
             }
         
         }
-        StartCoroutine(GetGooglePhoto(700));
+      
         yield break;
 
     }
@@ -83,7 +86,7 @@ public class GoogleApiNetworkHandler : MonoBehaviour
         yield return req.SendWebRequest();
         if (req.result != UnityWebRequest.Result.Success)
         {
-            Debug.Log(req.error);
+            internetError.Invoke();
         }
         else
         {
@@ -96,7 +99,7 @@ public class GoogleApiNetworkHandler : MonoBehaviour
             }
             catch (System.Exception)
             {
-
+                internetError.Invoke();
                 throw new System.Exception("Can't donwload google Photo");
             }
 
@@ -108,6 +111,8 @@ public class GoogleApiNetworkHandler : MonoBehaviour
 
     }
 
+
+   
 }
 
 

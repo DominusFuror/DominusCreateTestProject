@@ -29,6 +29,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     public float currentAngle=0;
     public int imageCount = 10;
     public float step;
+    bool isRotate = true;
     void Update()
     {
         BlocksMoveUpdate();
@@ -36,13 +37,48 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
         
     }
 
+    public void SettingsUpdate(bool isCountChange, Setts settingsMenu)
+    {
+
+        circleAxesMultiplication = new Vector3(
+            settingsMenu.circleAxeX,
+            settingsMenu.circleAxeY,
+            settingsMenu.circleAxeZ
+            );
+        circleRad = settingsMenu.circleRadius;
+        isRotate = settingsMenu.isRotate;
+        imageCount = settingsMenu.imageCount;
+        if (isCountChange)
+        {
+            Generation();
+        }
+
+
+
+
+
+    }
+
 
     private void OnEnable()
     {
+        Generation();
+      
+    }
+
+    private void Generation()
+    {
         step = Mathf.PI * 2 / imageCount;
         currentAngle = 0;
+
+        for (int i = 0; i < imageBlocks.Count; i++)
+        {
+            Destroy(imageBlocks[i]);
+   
+        }
+        imageBlocks.Clear();
         GeneretImageBlocks();
-      
+
     }
 
 
@@ -58,7 +94,7 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
             Vector3 newPrefabPosition = UpdateImageBlocksPositions(i);
             Quaternion newPrefabRot = UpdateImageBlocksRotation(newPrefabPosition);
             imageBlocks.Add(
-                Instantiate(imagePrefab, newPrefabPosition, newPrefabRot
+                 Instantiate(imagePrefab, newPrefabPosition, newPrefabRot
                 ));
 
             imageBlocks[i].transform.parent = this.transform;
@@ -68,14 +104,16 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
                 imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = color1;
                 if (i == 0)
                 {
-
-                   imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = ImageLoaderManager.imageUploader.UploadImage();
+                    imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = Color.white;
+                    imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().sprite = ImageLoaderManager.imageUploader.UploadImage();
                 }
             }
             else
             {
                 imageBlocks[i].GetComponentInChildren<UnityEngine.UI.Image>().color = color2;
             }
+
+           
         }
     }
 
@@ -107,27 +145,39 @@ public class CirclePhotoBlockMovementManager : MonoBehaviour
     {
 
 
-       
-        
-        float y = 90 - Mathf.Lerp(0, 90, Mathf.Abs( itemPosition.x- circleRad * circleAxesMultiplication.x) / circleRad*circleAxesMultiplication.x);
-
-
-        if (itemPosition.z > 0 && !(itemPosition.x <= (-circleRad * circleAxesMultiplication.x) * 0.99f))
+        if (isRotate)
         {
-           y *=-1;
-            y += 180;
+            float y = 90 - Mathf.Lerp(0, 90, Mathf.Abs(itemPosition.x - circleRad * circleAxesMultiplication.x) / circleRad * circleAxesMultiplication.x);
+
+
+            if (itemPosition.z > 0 && !(itemPosition.x <= (-circleRad * circleAxesMultiplication.x) * 0.99f))
+            {
+                y *= -1;
+                y += 180;
+
+            }
+
+            if (itemPosition.x <= (-circleRad * circleAxesMultiplication.x) * 0.99f)
+            {
+
+                y += 3;
+            }
+
+            Quaternion rotate = Quaternion.Euler(0, y, 0);
+
+            return rotate;
 
         }
 
-        if(itemPosition.x <= (-circleRad * circleAxesMultiplication.x)*0.99f)
+        else
         {
 
-            y += 3;
+            Quaternion rotate = Quaternion.Euler(0, 90, 0);
+
+            return rotate;
         }
         
-        Quaternion rotate = Quaternion.Euler(0, y, 0);
-
-        return rotate;
+      
     }
     private void BlocksMoveUpdate()
     {

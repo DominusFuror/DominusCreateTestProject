@@ -14,6 +14,11 @@ public class InputPlaceNameManager : MonoBehaviour
     public GoogleApiNetworkHandler googleApiNetworkHandler;
 
 
+    private void Start()
+    {
+        googleApiNetworkHandler.completeWebReq.AddListener(ShowPhotoCircle);
+    }
+
     public void OnButtonClick()
     {
 

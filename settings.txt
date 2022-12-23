@@ -1,0 +1,1 @@
+{"circleRadius":8.188784,"circleAxeX":1.476109,"circleAxeY":6.84624767,"circleAxeZ":0.80483973,"imageCount":10,"isRotate":false}
