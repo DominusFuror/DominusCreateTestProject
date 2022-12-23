@@ -29,7 +29,7 @@ public class InputManager : MonoBehaviour
     bool recordVelocity = false;
 
 
-   
+
 
 
     private void Update()
@@ -73,6 +73,13 @@ public class InputManager : MonoBehaviour
     void MouseInputCheck()
     {
 
+        if (!SettingsMenu.isSettingsBlockHidden)
+        {
+
+            
+                return;
+            
+        }
         // Check click and remove bottom side of screen for mouse movement
         if (Input.GetKey(KeyCode.Mouse0) && Input.mousePosition.y > Screen.width/8)
         {

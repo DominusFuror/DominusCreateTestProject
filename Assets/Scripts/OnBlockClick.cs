@@ -7,6 +7,8 @@ public class OnBlockClick : MonoBehaviour
 
 
     Vector3 mouseInputPosition;
+    private bool isSettingsOn;
+
     private void OnMouseDown()
     {
 
@@ -21,11 +23,16 @@ public class OnBlockClick : MonoBehaviour
     }
     private void OnMouseUp()
     {
-
-        if(mouseInputPosition== Input.mousePosition)
+        if (SettingsMenu.isSettingsBlockHidden)
         {
-            InfoBlockAnimationManager.infoBlockAnimationManager.ChangeState();
+            if (mouseInputPosition == Input.mousePosition)
+            {
+                InfoBlockAnimationManager.infoBlockAnimationManager.ChangeState();
+            }
+          
         }
+
+      
        
     }
 

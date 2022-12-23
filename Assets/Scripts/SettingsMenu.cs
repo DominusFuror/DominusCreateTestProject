@@ -146,8 +146,11 @@ public class SettingsMenu : MonoBehaviour
 
     [SerializeField]
     Animator menuAnimator;
+
+   public static bool isSettingsBlockHidden = true;
     public void OnMenuButtonClick()
     {
+        isSettingsBlockHidden = !isSettingsBlockHidden;
         menuAnimator.SetBool("IsHide", !menuAnimator.GetBool("IsHide"));
     }
 
